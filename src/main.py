@@ -1,5 +1,5 @@
 """
-Main entry point for the Tennis Booking Assistant application.
+Main entry point for the AI Assistant application.
 """
 
 import os
@@ -46,7 +46,7 @@ def check_requirements():
 
 def main():
     """Main application entry point."""
-    print("🎾 Starting Tennis Booking Assistant...")
+    print("Starting AI Assistant...")
 
     # Load environment variables
     load_environment()
@@ -61,7 +61,7 @@ def main():
     # Create and launch the Gradio app
     app = create_app(openai_api_key)
 
-    print("✅ Tennis Booking Assistant is ready!")
+    print("✅ AI Assistant is ready!")
     print("🌐 Opening web interface...")
 
     # Launch the app

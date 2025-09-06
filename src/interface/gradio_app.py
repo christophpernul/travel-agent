@@ -6,20 +6,21 @@ import os
 import gradio as gr
 from typing import List, Tuple
 
-from src.agent.tennis_agent import TennisBookingAgent
+from src.constants import APPLICATION_NAME, APPLICATION_DESCRIPTION
+from src.agent.agent import AIAgent
 
 
-class TennisBookingInterface:
+class ApplicationInterface:
     """Gradio interface for the tennis booking assistant."""
 
     def __init__(self, openai_api_key: str):
-        self.agent = TennisBookingAgent(openai_api_key)
+        self.agent = AIAgent(openai_api_key)
         self.chat_history: List[dict] = []
 
     def create_interface(self) -> gr.Blocks:
         """Create the Gradio interface."""
         with gr.Blocks(
-                title="Tennis Buchungsassistent",
+                title=APPLICATION_NAME,
                 theme=gr.themes.Soft(),
                 css="""
             .chat-container {
@@ -35,23 +36,11 @@ class TennisBookingInterface:
             }
             """
         ) as interface:
-            gr.Markdown("""
-            # 🎾 Tennis Buchungsassistent
-
-            **Sport- und Tennis-Club München Süd**
-
-            Frag mich, um dir bei der Suche und Buchung von Tennisplätzen zu helfen! Ich kann die Verfügbarkeit prüfen und basierend auf deinen Vorlieben die besten Optionen vorschlagen.
-
-            **Beispielanfragen:**
-            - "Ich möchte morgen um 15 Uhr Tennis spielen"
-            - "Mein Name ist John, ich bevorzuge Sandplätze"
-            - "Suche nach Hallenplätzen für Einzel am Freitag"
-            - "Brauche einen Platz für Doppel am Wochenende"
-            """)
+            gr.Markdown(APPLICATION_DESCRIPTION)
 
             # Chat interface
             chatbot = gr.Chatbot(
-                label="Chat mit Tennis Assistent",
+                label="Chat with Agent",
                 height=500,
                 show_label=True,
                 container=True,
@@ -61,15 +50,15 @@ class TennisBookingInterface:
             with gr.Row():
                 # Text input
                 msg = gr.Textbox(
-                    label="Nachricht eingeben",
-                    placeholder="z.B., Ich möchte morgen um 15 Uhr Tennis spielen",
+                    label="Submit Message",
+                    placeholder="e.g., Tell me something about Munich.",
                     lines=2,
                     scale=3
                 )
 
             with gr.Row():
-                submit_btn = gr.Button("Senden", variant="primary", size="lg")
-                clear_btn = gr.Button("Chat löschen", variant="secondary")
+                submit_btn = gr.Button("Send", variant="primary", size="lg")
+                clear_btn = gr.Button("Delete Chat", variant="secondary")
 
             # Event handlers
             submit_btn.click(
@@ -94,7 +83,7 @@ class TennisBookingInterface:
 
 def create_app(openai_api_key: str) -> gr.Blocks:
     """Create and return the Gradio app."""
-    interface = TennisBookingInterface(openai_api_key)
+    interface = ApplicationInterface(openai_api_key)
     return interface.create_interface()
 
 
