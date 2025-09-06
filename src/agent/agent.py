@@ -8,6 +8,7 @@ from agents import Agent, trace, Runner
 
 from src.constants import AGENT_NAME
 from src.prompts import SYSTEM_PROMPT
+from src.agent.tools import print_okay
 
 
 @dataclass
@@ -24,7 +25,8 @@ class AIAgent:
         self.agent = Agent(
             name=AGENT_NAME,
             model="gpt-4o-mini",
-            instructions=self._get_system_message()
+            instructions=self._get_system_message(),
+            tools=[print_okay]
         )
 
     def _get_system_message(self) -> str:
